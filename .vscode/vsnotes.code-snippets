@@ -1,0 +1,65 @@
+{
+  "dev tag": {
+    "scope": "yaml,markdown,yml,json",
+    "prefix": "dev",
+    "description": "VS Notes yaml frontmatter tag.",
+    "body": [
+      "\\$dev 💠"
+    ]
+  },
+  "pinned tag": {
+    "scope": "yaml,markdown,yml,json",
+    "prefix": "pinned",
+    "description": "VS Notes yaml frontmatter tag.",
+    "body": [
+      "\\$pinned 📌"
+    ]
+  },
+  "todo tag": {
+    "scope": "yaml,markdown,yml,json",
+    "prefix": "todo",
+    "description": "VS Notes yaml frontmatter tag.",
+    "body": [
+      "\\$todo 📆"
+    ]
+  },
+  "mc tag": {
+    "scope": "yaml,markdown,yml,json",
+    "prefix": "mc",
+    "description": "VS Notes yaml frontmatter tag.",
+    "body": [
+      "\\$mc 🧙"
+    ]
+  },
+  "jot tag": {
+    "scope": "yaml,markdown,yml,json",
+    "prefix": "jot",
+    "description": "VS Notes yaml frontmatter tag.",
+    "body": [
+      "\\$jot ✍️"
+    ]
+  },
+  "VSNote default template": {
+    "scope": "markdown,yaml",
+    "prefix": "vsn",
+    "body": [
+      "---",
+      "id: \"dev\"",
+      "timestamp: ${CURRENT_DATE} ${CURRENT_MONTH_NAME_SHORT} ${CURRENT_YEAR}, ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "tags:",
+      "  - $2",
+      "---",
+      "@import \"../.style/dev.less\"\n",
+      "",
+      "# $1",
+    ]
+  },
+  "node-modules tag": {
+    "scope": "yaml,markdown,yml,json",
+    "prefix": "nm",
+    "description": "VS Notes yaml frontmatter tag.",
+    "body": [
+      "node-modules"
+    ]
+  },
+}

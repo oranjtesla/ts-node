@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+
+ROOT_DIR=$(pwd)
+
+PREFIX="pre-commit:"
+function join_by {
+  local d=${1-} f=${2-}
+  if shift 2; then
+    printf %s "$f" "${@/#/$d}"
+  fi
+}
+function log() {
+  printf '\033[0;97m%s\033[0m\n' "$1"
+}
+function yellow() {
+  printf '\033[0;93m%s\033[0m\n' "$1"
+}
+function num_prog() {
+  printf '\033[0;90m\n %s \033[1;93m (%s) \033[0;97m %s\n\033[0m' '>' "$1" "$2"
+}
+function log_error() {
+  printf '\033[1;91m   [%s] \033[0;97m%s\n\033[0m' 'ERR' "$1"
+}
+
+function log_info() {
+  printf '\033[1;96m   [%s] \033[0;97m%s\n\033[0m' 'INF' "$1"
+}
+
+function log_warn() {
+  printf '\033[1;93m   [%s] \033[0;97m%s\n\033[0m' 'WRN' "$1"
+}
+
+function prog() {
+  printf '\033[0;90m\n %s \033[0;97m%s\n\033[0m' ">" "$1"
+}
+function bold_prog() {
+  printf '\033[0;90m %s \033[1;97m%s\n\n\033[0m' ">" "$1"
+}
+
+# SCRIPT START #
+printf '\n'
+bold_prog "Ingressing: git pre-commit hook."
+log "This script will lint and format staged files."
+log "Linting errors will abort the commit."
+
+# Create list of staged files.
+fileList=$(git diff --diff-filter=d --cached --name-only)
+
+# Exit script if no staged.
+if [ ${#fileList} -eq 0 ]; then
+    bold_prog "No staged files found. Egressing script."
+    exit 0
+fi
+
+printf '\n'
+yellow "Staged files:"
+echo "${fileList}"
+# Linting Javascript files.
+num_prog '1/4' "Checking for .js files."
+jsFileList=$(echo "$fileList" | grep -E '\.(js)$')
+if [ ${#jsFileList} -gt 0 ]; then
+    log_info "Found $(echo "$jsFileList" | wc -l) .js files."
+    prog "Linting .js files."
+    if ! npx eslint ${jsFileList[*]} "$@"; then
+        log_error "$PREFIX Commit aborted due to JS linting errors."
+        bold_prog "Script arrested. Exiting..."
+        exit 1
+    fi
+else
+    log_info "No staged Javascript files were found."
+fi
+
+# Linting Typescript files
+num_prog '2/4' "Checking for .ts files."
+tsFileList=$(echo "$fileList" | grep -v 'web**' | grep -E '\.(ts)$')
+
+if [ ${#tsFileList} -gt 0 ]; then
+    log_info "Found $(echo "$tsFileList" | wc -l) Typescript files."
+    prog "Linting .ts files."
+    if ! npx eslint ${tsFileList[*]} "$@"; then
+        log_error "$PREFIX Commit aborted due to TS linting errors."
+        bold_prog "Script arrested. Exiting..."
+        exit 1
+    fi
+else
+    log_info "No staged TypeScript files were found."
+fi
+
+# Linting web/ directory files
+#"${@#web/}"
+num_prog '3/4' "Checking web/ directory."
+
+webFileList=$(echo "$fileList" | grep 'web**' | grep -E '\.(ts|js|tsx|jsx)$')
+if [ ${#webFileList} -gt 0 ]; then
+    log_info "$(echo "${webFileList}" | wc -l) files found in web/ directory."
+    # cd into web/ directory
+    cd web
+    # remove "web/" from file names
+    fileArray=()
+    for file in ${webFileList[@]}; do
+      fileArray+=("${file#web/}")
+    done
+    prog "Linting .ts .tsx .js .jsx files in web/ directory."
+    # run eslint
+    if ! npx eslint -c /ns/500/jot/web/.eslintrc.json --resolve-plugins-relative-to /ns/500/jot/web ${fileArray[*]} "$@"; then
+        log_error "$PREFIX Commit aborted due to web/ directory linting errors."
+        bold_prog "Script arrested. Exiting..."
+        exit 1
+    fi
+    # cd back to project root
+    cd $ROOT_DIR
+else
+    log_info "No staged files were found from the web/ directory."
+fi
+
+# Format entire fileList with Prettier.
+num_prog '4/4' "Formatting staged files."
+prettierFileList=$(echo "$fileList" | grep -E '\.(ts|js|tsx|jsx|css|less|json|yaml|yml|gql|graphql|scss|html)$')
+if [[ ${#prettierFileList} -gt 0 ]]; then
+  if ! npx prettier --write ${prettierFileList[*]} "$@"; then
+    log_error "$PREFIX Commit aborted due to formatting errors."
+    bold_prog "Script arrested. Exiting..."
+    exit 1
+  else
+    printf '\n'
+    log_info "All staged files formatted."
+  fi
+  else
+    log_info "No staged files require formatting."
+fi
+# Re-add files that were altered due to formatting.
+log_info "Staging formatting changes."
+git add ${prettierFileList[*]}
+printf '\n'
+bold_prog "Egressing: pre-commit complete."
+echo

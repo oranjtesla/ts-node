@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.base",
+    "compilerOptions": {
+        "declarationMap": true, // :@: strongly recommended when using project reference
+        "composite": true,
+        "disableReferencedProjectLoad": true, // :@: perf boost
+        "disableSolutionSearching": true // :@: perf boost
+    }
+}

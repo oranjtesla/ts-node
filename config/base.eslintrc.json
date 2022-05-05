@@ -1,0 +1,15 @@
+{
+    "extends": ["eslint:recommended"],
+    "rules": {
+        "no-empty-pattern": "warn",
+        "no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
+        ],
+        "no-undef": "warn",
+        "@typescript-eslint/no-empty-interface": "off"
+    }
+}

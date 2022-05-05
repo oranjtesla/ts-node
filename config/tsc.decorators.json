@@ -1,0 +1,8 @@
+{
+    // :@: source this file if project requires decorators
+    "extends": "./tsc.declarations",
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    }
+}

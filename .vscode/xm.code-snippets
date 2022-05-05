@@ -1,0 +1,236 @@
+{
+  "import gql": {
+    "scope": "typescript",
+    "prefix": "imp-gql",
+    "description": "Import custom gql namespace.",
+    "body": [
+      "import { gql } from \"\\$gql/gql\";"
+    ]
+  },
+  "import Ctx": {
+    "scope": "typescript",
+    "prefix": "imp-ctx",
+    "description": "Import Ctx namespace.",
+    "body": [
+      "import { Ctx } from \"\\$ti/context.ti\";"
+    ]
+  },
+  "gql-field": {
+    "scope": "typescript",
+    "prefix": ["gql-field", "gqlf"],
+    "description": "gql-field configuration template",
+    "body": [
+      "${1:key}: {",
+      "  type: ${2:type},",
+      "  description: \"$9\",",
+      "  resolve: ${21:async} (obj: $3${4:, ${5:{ $6 \\}} ,${7:ctx: ${8:Ctx.GraphQL}}}): ${22:Promise<}$10${23:>} => {",
+      "    $0",
+      "    return $10;",
+      "  }",
+      "},",
+    ]
+  },
+  "gql rootObject": {
+    "prefix": "gql-root",
+    "scope": "typescript",
+    "description": "gql.rootObject template.",
+    "body": [
+      "import { gql } from \"$gql/gql\";",
+      "import { Ctx } from \"$ti/context.ti\";",
+      "import { $2 } from \"./$1.entity\";",
+      "",
+      "export const $1: gql.RootObject<$2,Ctx.GraphQL> = new gql.RootObject({",
+      "  name: \"$1\",",
+      "  description: \"$2 root object.\",",
+      "  fields: {",
+      "    id: {",
+      "      type: gql.Scalar.id,",
+      "      description: \"The $1's unique ID.\",",
+      "      resolve: (obj: $2): string => {",
+      "        return Buffer.from(`$1-\\${obj.id}`).toString(\"base64\");",
+      "      }",
+      "    },",
+      "    _id: {",
+      "      type: gql.Scalar.id,",
+      "      description: \"$2's database primary key ID.\",",
+      "      resolve: (obj: $2): number => {",
+      "        return obj.id;",
+      "      }",
+      "    },",
+      "    $0",
+      "    createdAt: {",
+      "      type: gql.Scalar.string,",
+      "      description: \"UTC string formatted creation timestamp.\",",
+      "      resolve: (obj: $2): string => {",
+      "        return obj.createdAt.toUTCString();",
+      "      }",
+      "    },",
+      "  }",
+      "})"
+    ]
+  },
+  "gql-edge": {
+    "prefix": "gql-edge",
+    "scope": "typescript",
+    "description": "GraphQL edge object template.",
+    "body": [
+      "import { gql } from \"\\$gql/gql\";",
+      "import { $1 as $1Obj } from \"./$1.root\";",
+      "",
+      "export const $1Edge = new gql.EdgeObject({",
+      "  name: \"$1Edge\",",
+      "  fields: {",
+      "    node: {",
+      "      description: \"The item at the end of the edge.\",",
+      "      type: $1Obj,",
+      "    },",
+      "    cursor: {",
+      "      description: \"Pagination cursor.\",",
+      "      type: gql.Scalar.string,",
+      "    },",
+      "  }",
+      "});"
+    ]
+  },
+  "import g": {
+    "scope": "typescript",
+    "prefix": "imp-g",
+    "description": "Import statement for GraphQL schema type-interfaces.",
+    "body": [
+      "import { g } from \"\\$ti/graphql.ti\";"
+    ]
+  },
+  "GraphQL Context": {
+    "scope": "typescript",
+    "prefix": "gcon",
+    "description": "GraphQL context object interface.",
+    "body": "Ctx.GraphQL"
+  },
+  "import react": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": ["imp-react", "ir"],
+    "body": [
+      "import React from \"react\";"
+    ]
+  },
+  "React: React.FC Component": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": ["react-fc-comp", "rfc", "rfcomp"],
+    "body": [
+      "interface $1Props {",
+      "  children?: React.ReactNode,",
+      "};",
+      "",
+      "const $1: React.FC<$1Props> = (props) => {",
+      "  return (",
+      "    <div>",
+      "      $0",
+      "    </div>",
+      "  );",
+      "};",
+      "export default $1;"
+    ]
+  },
+  "React: Class Component": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": ["react-class-comp", "rcc", "rcomp"],
+    "body": [
+      "class $1 extends React.Component<$1Props> {",
+      "  render() {",
+      "    return (",
+      "      <div>",
+      "        $0",
+      "      </div>",
+      "    );",
+      "  }",
+      "};",
+      "export default $1;"
+    ]
+  },
+  "React: import userForm": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": ["imp-user-form", "imuf"],
+    "description": "import statemtn for userForm object.",
+    "body": [
+      "import { useForm } from \"react-hook-form\";"
+    ]
+  },
+  "React: import styles": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": ["imp-styles", "ims", "is"],
+    "body": [
+      "import styles from \"$1.module.css\";"
+    ]
+  },
+  "React: form snippet": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": ["react-form", "react-user-form"],
+    "body": [
+      "const { register, handleSubmit, formState: { errors }, } = useForm();",
+      "const onSubmit = (data: any) => console.log(data);"
+    
+    ]
+  },
+  "import styled-components": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": "imp-styled",
+    "description": "import statement for styled-components module.",
+    "body": [
+      "import styled from \"styled-components\";"
+    ]
+  },
+  "useForm()": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": "useform",
+    "description": "description",
+    "body": [
+      "const { formState${3::{ errors \\}}, handleSubmit, register, $2 } = useForm<$1>($4);"
+    ]
+  },
+  "onSubmit": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": "on-submit",
+    "description": "description",
+    "body": [
+      "const onSubmit = (data: ${1:any}) => ${2:console.log(data);}"
+    ]
+  },
+  "react: Function Component": {
+    "scope": "typescript, typescriptreact, javascript, javascriptreact",
+    "prefix": "fc",
+    "body": [
+      "interface _$1Props {",
+      "};",
+      "\ntype $1Props = _$1Props;\n",
+      "function $1({}: $1Props) {",
+      "\n  return (",
+      "    <$2>",
+      "      $0",
+      "    </$2>",
+      "  );",
+      "}",
+      "\nexport default $1;"
+    ]
+  },
+  "react: children prop": {
+    "scope": "typescript, typescriptreact",
+    "prefix": "childp",
+    "body": [
+      "children: ${1|React.ReactNode,React.ReactElement|}"
+    ]
+  },
+  "import CSS namespace": {
+      "scope": "typescript, typescriptreact",
+      "prefix": ["imp-css", "icss"],
+      "body": [
+          "import { CSS } from \"\\$u/css.ti\";"
+      ]
+  },
+  "import quantOrElse util": {
+      "scope": "typescript, typescriptreact",
+      "prefix": ["imp-qua", "iqua"],
+      "body": [
+          "import { quantOrElse as qua } from \"\\$u/quantOrElse\";"
+      ]
+  }
+} 

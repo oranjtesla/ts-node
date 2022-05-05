@@ -1,0 +1,12 @@
+{
+    // :@: base + declaration emitting options
+    "extends": "./tsconfig.base",
+    "compilerOptions": {
+        "declarationDir": "./declarations",
+        "declaration": true,
+        "emitDeclarationOnly": true
+    }
+    //"references": [
+    //  { "path": "/ns/500/ns-lib/ns-fp/" }
+    //],
+}

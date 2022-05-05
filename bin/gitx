@@ -1,0 +1,232 @@
+#!/usr/bin/env bash
+
+BASE=$'\033[0;'
+BOLD=$'\033[1;'
+RESET=$'\033[0m'
+EOL="\n${RESET}"
+_RED=$'31m'
+_GREEN=$'32m'
+_YELLOW=$'33m'
+_BLUE=$'34m'
+_MAGENTA=$'35m'
+_CYAN=$'36m'
+_WHITE=$'37m'
+RED=$'91m'
+GREEN=$'92m'
+YELLOW=$'93m'
+BLUE=$'94m'
+MAGENTA=$'95m'
+CYAN=$'96m'
+WHITE=$'97m'
+
+
+# Me identifier
+mc=$'\U1F9D9' # mage
+# Basic commit types #
+# Add
+gcheck=$'\U2714\UFE0F' # green check
+gcheckbox=$'\U2705' # check mark button
+gc=$'\U1F7E2' # green circle
+gapp=$'\U1F34F' # green apple - adding a new idea or feature
+# Modify
+
+bc=$'\U1F535' # blue circle
+sbd=$'\U1F539' # small blue diamond
+# delete
+rc=$'\U1F534' # red circle
+
+# Semantic types
+# Config related
+gear=$'\U2699\UFE0F' # gear
+# freeze branch, stopping development, lock to readonly
+ice=$'\U1F9CA' # ice cube
+# Commit is mostly boilerplate
+bp=$'\U1F37D\UFE0F' # fork and knife with plate
+
+# Committing imports or direct copies
+plane=$'\U2708\UFE0F' # airplane
+# Committing new packages/modules
+pkg=$'\U1F4E6'
+
+# Launch version
+rocket=$'\U1F680' # rocket
+# Commit is in a WIP state
+constr=$'\U1F6A7' # construction
+# Commit is a merge
+dna=$'\U1F9EC'
+# Commit contains mostly small aesthetic or syntax changes
+broom=$'\U1F9F9'
+# End of a feature/deprecating something
+stop=$'\U1F6D1' # stop sign
+no=$'\U26D4' # no entry
+
+# Renaming or moving files to new directories
+sw=$'\U1F500' # twist/shuffle/switch
+# bug fix
+fix=$'\U1F6E0\UFE0F' # hammer and wrench
+# Completion of a feature
+rtd=$'\U1F53B' # red triangle pointed down
+# Stable checkpoint
+pin=$'\U1F4CC' #pushpin
+# documentation
+knib=$'\U2712\UFE0F' # black nib
+# link of some kind
+link=$'\U1F517' # link
+# fork initial commit
+comet=$'\U2604' # comet
+# testing
+test=$'\U1F9EA'
+# last stable commit before test branching
+anchor=$'\U2693' # anchor
+
+# Code Start
+PRE=""
+
+# Single argument cases.
+case "$1" in
+  add) 
+    PRE="${gc}"
+    git commit -m "${PRE} ${*:2}"
+    exit 0;;
+  mod)
+    PRE="${bc}"
+    git commit -m "${PRE} ${*:2}"
+    exit 0;;
+  del)
+    PRE="${rc}"
+    git commit -m "${PRE} ${*:2}"
+    exit 0;;
+  tweak)
+    PRE="${sbd}"
+    git commit -m "${PRE} ${*:2}"
+    exit 0;;
+  conf)
+    PRE="${sbd}${gear}"
+    git commit -m "${PRE} ${*:2}"
+    exit 0;;
+  new)
+    PRE="${gapp}"
+    case "$2" in
+      pkg) # prerolled message for adding new packages/modules
+        PRE="${gc}${pkg}"
+        git commit -m "${PRE} ${*:3}"
+        exit 0;;
+      conf) # prerolled message for adding new config files
+        PRE="${gc}${gear}"
+        git commit -m "${PRE} ${*:3}"
+        exit 0;;
+      imp*) # prerolled message for adding new imports
+        PRE="${gc}${plane}"
+        git commit -m "${PRE} ${*:3}"
+        exit 0;;
+      *) # adding new features/ideas. Significant additions only.
+        git commit -m "${PRE} ${*:2}"
+        exit 0;;
+    esac
+    ;;
+  merge) # commits with message using all args after $2, checkout to $2 and merges 
+    current_branch=$(git branch --show-current)
+    PRE="${gc}${dna}"
+    git commit -m "${PRE} ${*:3}"
+    git checkout "$2"
+    git merge "${current_branch}"
+    git branch -d "${current_branch}"
+
+    exit 0;;
+  freeze) # add everything to staging area and commit. 
+    PRE="${no}${ice}"
+    git add -A
+    git commit -m "${PRE} ${*:2}"
+    exit 0;;
+  anchor) # commit, stash remaining changes, and checkout-create to a new branch
+    PRE="${stop}${anchor}${ice}"
+    git commit -m "${PRE} anchor commit." --no-verify
+    git stash
+    git checkout -B "$2"
+    exit 0;;
+  test) # debugging and testing
+    PRE="${test}"
+    # Do not use operator characters aka $, ~, \, etc.
+    # no backticks
+    echo "${PRE} ${*:2}"
+    exit 0;;
+  *) 
+  ;;
+esac
+
+case "$1" in
+  --new|-n|-gapp*) PRE="${gapp}"
+  ;;
+  --add|-A) PRE="${gc}"
+  ;;
+  -a|-check) PRE="${gcheck}"
+  ;;
+  --modify|-M|-bc) PRE="${bc}"
+  ;;
+  -m|-sbd) PRE="${sbd}"
+  ;;
+  --delete|-d|-D) PRE="${rc}"
+  ;;
+  -mc|-mage) PRE="${mc}"
+  ;;
+  -sw|--switch) PRE="${sw}"
+  ;;
+  --printEmojis|-pe)
+  echo ${mc} ${gcheck} ${gcheckbox} ${gc} ${gapp} ${bc} ${sbd} ${rc} ${gear} ${ice} ${bp} ${plane} ${pkg} ${rocket} ${constr} ${dna} ${broom} ${stop} ${no} ${sw} ${fix} ${rtd} ${pin} ${knib} ${link} ${anchor}
+  exit 0;;
+  -h|--help)
+  ;;
+  *)
+  ;;
+esac
+
+case "$2" in
+  -bp) PRE="${PRE}$bp"
+  ;;
+  -pin) PRE="${PRE}$pin"
+  ;;
+  -ice|-freeze) PRE="${PRE}$ice"
+  ;;
+  -conf|-gear) PRE="${PRE}$gear"
+  ;;
+  -pkg|-package) PRE="${PRE}$pkg"
+  ;;
+  -imp|-plane) PRE="${PRE}$plane"
+  ;;
+  -merge|-dna) PRE="${PRE}$dna"
+  ;;
+  -clean|-broom|-sweep) PRE="${PRE}$broom"
+  ;;
+  -stop) PRE="${PRE}$stop"
+  ;;
+  -no) PRE="${PRE}$no"
+  ;;
+  -sw|-twist|-shuffle) PRE="${PRE}$sw"
+  ;;
+  -fix|-bug) PRE="${PRE}$fix"
+  ;;
+  -rtd) PRE="${PRE}$rtd"
+  ;;
+  -doc|-knib) PRE="${PRE}$knib"
+  ;;
+  -link|-l) PRE="${PRE}$link"
+  ;;
+  -comet|-fork) PRE="${PRE}$comet"
+  ;;
+  -anc*) PRE="${PRE}$anchor"
+  ;;
+  -wip|-constr*) PRE="${PRE}$constr"
+  ;; 
+  -launch|-rocket) PRE="${PRE}$rocket"
+  ;;
+  -mc|-mage) PRE="${PRE}$mc"
+  ;;
+  -test|-t) PRE="${PRE}$test"
+  ;;
+  *)
+  git commit -m "${PRE} $2"
+  exit 0;;
+esac
+echo "$PRE"
+
+git commit -m "${PRE} $3"

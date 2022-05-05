@@ -1,0 +1,35 @@
+{
+    // ::Base TSConfig File
+    // Contains shared tsconfig options for a nodeJS project. No path, project reference, or decorator options enabled.
+    // ------------------------------------------
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2021", // :@: up to ES6 for full browser coverage. ES2021 for Node.
+        "lib": [
+            "ES2021", // :@: ES2022 set to release June 2022
+            "dom",
+            "ESNext.AsyncIterable"
+        ],
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "skipLibCheck": true, // :@: perf boost
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "pretty": true,
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "incremental": true, // :@: perf boost
+
+        // :: Error settings
+        "strict": true, // :@: put first so other settings override it.
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "strictPropertyInitialization": false
+    },
+    "include": ["./src/**/*.tsx", "./src/**/*.ts"],
+    "exclude": ["node_modules"]
+}

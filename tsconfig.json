@@ -1,0 +1,25 @@
+{
+    "extends": "./config/tsc.decorators",
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2021",
+        "lib": ["ES2021", "dom", "ESNext.AsyncIterable"],
+        "rootDir": "src",
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "paths": {
+            "$ti/*": ["./src/ti/*"],
+            "$models/*": ["./src/models/*"],
+            "$schema/*": ["./src/models/schema/*"],
+            "$errata/*": ["./src/errata/*"],
+            "$ctx/*": ["./src/context/*"],
+            "$gql/*": ["./src/gql/*"]
+        },
+        "declarationDir": "./declarations",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "disableSolutionSearching": true
+    },
+    "include": ["./src/**/*.tsx", "./src/**/*.ts"],
+    "exclude": ["node_modules"]
+}

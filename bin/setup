@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+function prog() {
+  printf '\e[1;96m %s \e[0;97m%s\e[0m\n' '>' "$1"
+}
+printf '\n'
+prog "Ingressing setup script."
+printf '\n'
+prog "Installing pre-commit hook to .git directory..."
+cp bin/pre-commit .git/hooks/pre-commit
+prog "Setting script execution permissions..."
+chmod +x .git/hooks/pre-commit
+
+echo -e "\033[1;92m   Finished!\033e"

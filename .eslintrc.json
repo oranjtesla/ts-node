@@ -1,0 +1,29 @@
+{
+    "env": {
+        "node": true,
+        "browser": true
+    },
+    "extends": ["./config/base.eslintrc.json", "prettier"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "settings": {
+        "next": {
+            "rootDir": "web/"
+        }
+    },
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "sourceType": "module"
+    },
+    "rules": {},
+    "root": true,
+    "overrides": [
+        {
+            "files": "xm/**/*.ts",
+            "parserOptions": {
+                "project": "./xm/tsconfig.json",
+                "sourceType": "module"
+            }
+        }
+    ]
+}

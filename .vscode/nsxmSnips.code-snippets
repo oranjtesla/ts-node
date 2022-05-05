@@ -1,0 +1,36 @@
+{
+  "Custom Markdown Style": {
+    "scope": "markdown,yaml",
+    "prefix": "style",
+    "body": [
+      "---",
+      "id: \"dev\"",
+      "---",
+      "@import \"$1./.style/dev.less\"\n",
+    ]
+  },
+  "Emoji: diamond_shape_with_a_dot_inside": {
+    "scope": "markdown,yaml,typescript",
+    "prefix": [":hub", ":node"],
+    "description": "💠",
+    "body": [
+      "💠"
+    ]
+  },
+  "Emoji: ballot_box_with_check": {
+    "scope": "markdown,yaml,typescript",
+    "prefix": [":check", ":done"],
+    "description": "☑️",
+    "body": [
+      "☑️"
+    ]
+  },
+  "Emoji: blue_square": {
+    "scope": "markdown,yaml,typescript",
+    "prefix": [":bs", ":box"],
+    "description": "🟦",
+    "body": [
+      "🟦"
+    ]
+  },
+}

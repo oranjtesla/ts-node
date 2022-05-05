@@ -1,0 +1,36 @@
+# .gitignore for node projects #
+
+# Universal
+node_modules/
+dist/
+*/temp/
+
+# Any directory appended with _old will be ignored.
+**/*_old/**
+
+# private directory names
+mc/
+*/mc/
+*/diary/
+# */notes/
+.exim/
+trash/
+# dev/
+
+# Generated, compiled, or system directories
+# .vscode/
+# .next/
+declarations/
+**/migrations/**
+**/generated/**
+
+# configuration files
+.gitattributes
+.env
+.vscodeignore
+.dockerignore
+*.code-workspace
+
+# Generated files
+*.tsbuildinfo
+package-lock.json
